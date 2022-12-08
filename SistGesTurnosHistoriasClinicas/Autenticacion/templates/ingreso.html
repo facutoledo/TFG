@@ -60,9 +60,15 @@
   </div>
   {% endif %}
   <div class="submit-row">
-    <input type="submit" value="{% translate 'Log in' %}">
+    <input type="submit" value="ingreso">
+  </div>
+  <div>
+    <a href="{% url 'registro_personal' %}">Registrarse</a>    
+  </div>
+  <div>
+    <a href="{% url 'registro_personal' %}">Validar usuario o recuperar contraseña</a>    
   </div>
 </form>
-
 </div>
+
 {% endblock %}

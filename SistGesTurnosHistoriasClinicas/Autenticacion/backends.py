@@ -10,21 +10,18 @@ class Backend(ModelBackend):
         if username is None or password is None:
             raise ValueError('Debe ingresar su Número de DNI y Contraseña para identificarse')
         else:
-            if '@' in username:
-                kwargs = {'correo_electronico': username}
-            else:
-                kwargs = {'dni': username}
+            kwargs = {'dni': username}
             try:
                 usuario = Usuario.objects.get(**kwargs)
                 if usuario.puede_ingresar():
                     if usuario.check_password(password):
                         return usuario
                     else:
-                        raise ValueError('Contraseña incorrecta. Le quedan % intentos',
+                        raise ValueError('Contraseña incorrecta. Le quedan %s intentos',
                                          getattr(usuario, 'intentos_fallidos_de_ingreso', None))
                 else:
                     raise ValueError('El usuario no se encuentra activo. '
-                                     'Para activar el usuario seleccione no recuerdo mi contraseña.')
+                                     'Para activar el usuario seleccione reestablecer contraseña.')
 
             except Usuario.DoesNotExist:
                 raise ValueError('No se encontró el usuario ingresado')
