@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from dateutil.relativedelta import relativedelta
@@ -134,9 +134,13 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
         return validado
 
-#TODO Establecer el cambio de contraseña vía email
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self._contrasena is not None:
-            password_validation.password_changed(self._contrasena, self)
-            self._contrasena = None
+# #TODO Establecer el cambio de contraseña vía email
+    # def save(self, *args, **kwargs):
+    #     if self._contrasena is not None:
+    #         password_validation.password_changed(self._contrasena, self)
+    #         self.is_active = True
+    #         #self._contrasena = None
+    #     super(Usuario, self).save(*args, **kwargs)
+
+
+

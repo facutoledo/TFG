@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+
+<p>¿Te olvidaste tu contraseña o tu usuario está inactivo?</p>
+<p>Ingresá tu correo electrónico a continuación para recibir las instrucciones:
+
+<div class="form-group">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary">Enviar</button>
+    </form>
+</div>
+
+
+{% endblock %}

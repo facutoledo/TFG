@@ -1,6 +1,7 @@
 from django.contrib.auth import views
 from django.urls import path, reverse_lazy
 
+from .forms import *
 from .views import *
 
 urlpatterns = [
@@ -16,14 +17,20 @@ urlpatterns = [
          name='contrasena_cambio'),
 
     #las siguientes 4 direcciones son para reestablecer la contraseña del usuario vía correo electrónico
-    path('password_reset/', views.PasswordResetView.as_view(template_name="password_reset_form.html"),
-         name='password_reset'),
-    path('password_reset/done/', views.PasswordResetDoneView.as_view(template_name="password_reset_done.html"),
-         name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(template_name="password_reset_confirm.html"),
-         name='password_reset_confirm'),
-    path('reset/done/', views.PasswordResetCompleteView.as_view(template_name="password_reset_complete.html"),
-         name='password_reset_complete'),
+    path('activar_cambio_contraseña/', 
+          #views.PasswordResetView
+          ActivarUsuarioCambioContraseña.as_view(template_name="activar_cambio_contraseña.html", success_url=reverse_lazy('activar_cambio_contraseña_hecho')),
+          name='activar_cambio_contraseña'),
+    path('activar_cambio_contraseña/hecho/', 
+          views.PasswordResetDoneView.as_view(template_name="activar_cambio_contraseña_hecho.html"),
+          name='activar_cambio_contraseña_hecho'),
+    path('activar_cambio_contraseña/<uidb64>/<token>/', 
+          views.PasswordResetConfirmView.as_view(template_name="activar_cambio_contraseña_confirmacion.html", 
+               form_class=EstablecerContraseñaForm, success_url=reverse_lazy('activar_cambio_contraseña_completado')),
+          name='activar_cambio_contraseña_confirmacion'),
+    path('activar_cambio_contraseña/completado/', 
+          views.PasswordResetCompleteView.as_view(template_name="activar_cambio_contraseña_completado.html"),
+          name='activar_cambio_contraseña_completado'),
 
 
     path('registro_personal/', RegistroPersonalViews.as_view(template_name="registro_empleados.html"),
