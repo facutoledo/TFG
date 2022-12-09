@@ -114,7 +114,7 @@ class ActivarUsuarioCambioContraseña(FormView):
             #     messages.error(self.request, 'el DNI '+ dni + ' ya se encuentra registrado')
             #     return render(self.request, 'registro_empleados.html', context)
         else:
-            messages.error(self.request, 'el DNI '+ dni + ' ya se encuentra registrado')
+            messages.error(self.request, 'correo no registrado')
             return render(self.request, 'registro_empleados.html', context)
 
         
