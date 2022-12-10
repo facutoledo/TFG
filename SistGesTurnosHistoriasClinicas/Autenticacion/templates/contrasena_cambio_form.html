@@ -1,52 +1,56 @@
 {% extends "base.html" %}
 
-{% block content %}<div id="content-main">
+{% block content %}
 
-<form method="post">{% csrf_token %}
-<div>
-{% if form.errors %}
-    <p class="errornote">
-    {% if form.errors.items|length == 1 %}
-        "Please correct the error below."
-    {% else %}
-        "Please correct the errors below."
-    {% endif %}
-    </p>
-{% endif %}
-
-
-<p>'Please enter your old password, for security’s sake, and then enter your new password twice so we can verify you typed it in correctly.'</p>
-
-<fieldset class="module aligned wide">
-
-<div class="form-row">
-    {{ form.old_password.errors }}
-    {{ form.old_password.label_tag }} {{ form.old_password }}
+<div id="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <form method="post">{% csrf_token %}
+                <div>
+                {% if form.errors %}
+                    <p class="errornote">
+                    {% if form.errors.items|length == 1 %}
+                        "Please correct the error below."
+                    {% else %}
+                        "Please correct the errors below."
+                    {% endif %}
+                    </p>
+                {% endif %}
+        
+                <p></p>
+                <p>Por favor ingresá tu vieja contraseña para comprobar tu identidad. </p>
+                <p>Luego ingresa una nueva contraseña siguiendo las siguientes indicaciones:</p>
+                <ul>
+                    <li>Tu contraseña no puede ser igual o similar a tu información personal.</li>
+                    <li>Tu contraseña debe tener al menos 8 caracteres.</li>
+                    <li>Tu contraseña no debe ser similar a otras que ya hayas usado.</li>
+                    <li>Tu contraseña debe incluir números y caracteres.</li>    
+                </ul>
+        
+                <div class="form-group py-1">
+                    {{ form.old_password.errors }}
+                    <label for="id_old_password">Contraseña actual:</label> 
+                    <input type="password" class="form-control" name="old_password" autocomplete="current-password" autofocus required id="id_old_password">
+                </div>
+                <div class="form-group py-1">
+                    {{ form.new_password1.errors }}
+                    <label for="id_new_password1">Contraseña nueva:</label> 
+                    <input type="password" class="form-control" name="new_password1" autocomplete="new-password" required id="id_new_password1">
+                </div>
+                <div class="form-group py-1">
+                    {{ form.new_password2.errors }}
+                    <label for="id_new_password2">Confirmación de la nueva contraseña:</label> 
+                    <input type="password" class="form-control" name="new_password2" autocomplete="new-password" required id="id_new_password2">
+                </div>
+                <div class="submit-row py-4">
+                    <input type="submit" class="btn btn-light form-control" value="Cambiar mi contraseña" class="default">
+                </div>
+        
+                </div>
+            </form>
+        </div>
+    </div>
+    
 </div>
-
-<div class="form-row">
-    {{ form.new_password1.errors }}
-    {{ form.new_password1.label_tag }} {{ form.new_password1 }}
-    {% if form.new_password1.help_text %}
-    <div class="help">{{ form.new_password1.help_text|safe }}</div>
-    {% endif %}
-</div>
-
-<div class="form-row">
-{{ form.new_password2.errors }}
-    {{ form.new_password2.label_tag }} {{ form.new_password2 }}
-    {% if form.new_password2.help_text %}
-    <div class="help">{{ form.new_password2.help_text|safe }}</div>
-    {% endif %}
-</div>
-
-</fieldset>
-
-<div class="submit-row">
-    <input type="submit" value="'Change my password'" class="default">
-</div>
-
-</div>
-</form></div>
 
 {% endblock %}

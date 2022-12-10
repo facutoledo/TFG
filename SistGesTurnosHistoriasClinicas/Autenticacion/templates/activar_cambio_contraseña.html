@@ -3,16 +3,27 @@
 
 {% block content %}
 
-<p>¿Te olvidaste tu contraseña o tu usuario está inactivo?</p>
-<p>Ingresá tu correo electrónico a continuación para recibir las instrucciones:
-
-<div class="form-group">
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-secondary">Enviar</button>
-    </form>
+<div class="container-fluid">
+    <div class="row">
+        <p>¿Te olvidaste tu contraseña o tu usuario está inactivo?</p>
+        <p>Ingresá tu correo electrónico a continuación para recibir las instrucciones:</p>
+    </div>
+    <div class="row">      
+        <div class="col-sm-6">
+            <div class="form-group">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group py-1">
+                        <label for="id_correo_electronico">Correo electronico:</label>
+                        <input type="email" class="form-control" name="correo_electronico" required id="id_correo_electronico">    
+                    </div>                    
+                    <div class="submit-row py-1">
+                        <input type="submit" class="btn btn-light form-control" value="Enviar">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
 </div>
-
-
 {% endblock %}

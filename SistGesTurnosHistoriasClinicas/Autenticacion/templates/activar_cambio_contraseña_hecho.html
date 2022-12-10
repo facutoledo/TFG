@@ -1,18 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-&rsaquo; {% translate 'Password reset' %}
-</div>
-{% endblock %}
-
 {% block content %}
-
+<p></p>
 <p>En los próximos minutos recibirás instrucciones en tu correo electrónico para restablecer la contraseña de tu cuenta y activarla. </p>
 
 <p>No te olvides de mirar en la carpeta SPAM o CORREO NO DESEADO.</p>
 
 <p>Si no recibes el correo, es posible que hayas ingresado mal la dirección o tu correo electrónico no está asociado a la cuenta que se desea activar. </p>
+
+<p><a class="text-light" href="{% url 'ingreso' %}">Ingreso</a></p>
+
 {% endblock %}
