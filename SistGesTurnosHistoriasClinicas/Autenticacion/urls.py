@@ -19,7 +19,6 @@ urlpatterns = [
 
      #Reestablecer la contraseña del usuario vía correo electrónico
      path('activar_cambio_contraseña/', 
-          #views.PasswordResetView
           ActivarUsuarioCambioContraseña.as_view(template_name="activar_cambio_contraseña.html", success_url=reverse_lazy('activar_cambio_contraseña_hecho')),
           name='activar_cambio_contraseña'),
      path('activar_cambio_contraseña/hecho/', 

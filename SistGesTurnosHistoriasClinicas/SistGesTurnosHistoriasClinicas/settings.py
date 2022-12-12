@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'Autenticacion',
     'SitioWeb',
+    'fichero',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'crum.CurrentRequestUserMiddleware',
 ]
 
 ROOT_URLCONF = 'SistGesTurnosHistoriasClinicas.urls'
@@ -78,9 +81,22 @@ WSGI_APPLICATION = 'SistGesTurnosHistoriasClinicas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'NAME': BASE_DIR / 'sigep_db.sqlite3',
+    },
+    # 'usuarios_db': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'usuarios_db.sqlite3',
+    # },
+    # 'fichero_db': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'fichero_db.sqlite3',
+    # }
 }
+
+# DATABASE_ROUTERS = [
+#     'database_routers.autenticacion_routers.AutenticacionRouter',
+#     'database_routers.fichero_routers.FicheroRouter'
+#     ]
 
 
 # Password validation

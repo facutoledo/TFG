@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %} Administrar datos del Paciente {% endblock %}
+
+{% block content %}
+    <!-- {% if user.is_authenticated %} -->
+
+        <h1>Datos del Paciente</h1>
+        <div class="form-group">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Guardar</button>
+            </form>
+        </div>
+    <!-- {% else %}
+        <h1>NO TENES PERMISO PARA ELLO</h1>
+    {% endif %} -->
+
+{% endblock %}

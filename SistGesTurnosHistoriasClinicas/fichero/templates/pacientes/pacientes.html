@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %} - Pacientes {% endblock %}
+
+{% block content %}
+
+    <h1>Pacientes</h1>
+    <div>
+        <button type="button" class="btn btn-light" onclick="location.href='{% url 'agregar_pacientes' %}'">Nuevo Paciente</button>
+    </div>
+
+
+    <h2>Buscar Paciente</h2>
+    <form method="get" action=".">
+        <div class="row">
+            <div class="col">
+                {{ filter.form }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-secondary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <div>
+    <!-- {% if user.is_authenticated %} -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        D.N.I.
+                    </th>
+                    <th>
+                        APELLIDO
+                    </th>
+                    <th>
+                        NOMBRE
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            {% for Paciente in object_list %}
+                {% if Paciente.borrado == False %}
+                        <tr>
+                            <th>
+                                <a href="{% url 'editar_paciente' Paciente.pk %}">
+                                    {{ Paciente.dni }}
+                                </a>
+                            </th>
+                            <th>
+                                {{ Paciente.apellido }}
+                            </th>
+                            <th>
+                                {{ Paciente.nombre }}
+                            </th>
+                            <th>
+                                <a href="{% url 'editar_paciente' Paciente.pk %}"> Historia Clínica</a><br/>
+                                <a class="text-warning" href="{% url 'editar_paciente' Paciente.pk %}"> Edit</a>
+                                <a class="text-danger" href="{% url 'borrar_paciente' Paciente.pk %}"> Eliminar </a>
+                            </th>
+                        </tr>
+                {% else %}
+                    {% if user.groups.all.0.name == "administradores" %} 
+                        <tr>
+                            <th>
+                                {{ Paciente.dni }}
+                            </th>
+                            <th>
+                                {{ Paciente.apellido }}
+                            </th>
+                            <th>
+                                {{ Paciente.nombre }}
+                            </th>
+                            <th>
+                                <a href="{% url 'borrar_paciente' Paciente.pk %}"> Recuperar </a>
+                            </th>
+                        </tr>
+                   {% endif %}
+               {% endif %}
+            {% endfor %}
+        </table>
+        <div>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    {% if page_obj.previous_page_number != 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">1</a>
+                        </li>
+                        <li class="page-item">
+                            ...
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item">
+                    <a class="page-link" href="#">{{ page_obj.number }}</a>
+                </li>
+                {% if page_obj.has_next %}
+                    {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                        </li>
+                        <li class="page-item">
+                            ...
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    <!-- {% else %}
+        <h1>NO TENES PERMISO PARA ELLO</h1>
+    {% endif %} -->
+    </div>
+{% endblock %}

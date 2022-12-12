@@ -5,4 +5,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Autenticacion.urls')),
     path('', include('SitioWeb.urls')),
+    path('', include('fichero.urls'))
 ]
