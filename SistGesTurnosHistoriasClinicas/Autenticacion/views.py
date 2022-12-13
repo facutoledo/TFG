@@ -17,6 +17,72 @@ from .forms import *
 
 class RegistroPersonalViews(FormView):
     template_name = "registro_empleados.html"
+    form_class = RegistroEmpleadoForm
+    #TODO página de bienvenida
+
+    def form_valid(self, form):
+        #todo enviar correo de verificación y que redirija a la página de establecer contraseña
+        context = super().get_context_data() #{'fieldValues': self.request.POST}        
+        dni = self.request.POST['dni']
+        correo_electronico = self.request.POST['correo_electronico']
+        
+        es_medico = self.request.POST.get('es_medico', False)
+        es_administrativo = self.request.POST.get('is_staff', False)
+        
+        if es_medico == 'on':
+            es_medico=True
+        
+        if es_administrativo =='on':
+            es_administrativo=True
+                   
+        if not Usuario.objects.filter(dni=dni).exists():
+            #if not Usuario.objects.filter(correo_electronico=correo_electronico).exists():
+            
+            #Creo el usuario sin contraseña e inactivo. luego tendrá que activarlo desde el correo electrónico
+            usuario = Usuario.objects.create_user(dni=dni, correo_electronico=correo_electronico, password='contraseña')
+            usuario.is_active=False
+            usuario.is_staff = es_administrativo
+            usuario.es_medico = es_medico
+            
+            usuario.save()
+
+            #Armo y envío el correo electrónico
+            dominio = '127.0.0.1:8000' #self.get_current_site(self.request).domain
+            
+            uid =  urlsafe_base64_encode(force_bytes(usuario.pk)),
+            token = PasswordResetTokenGenerator().make_token(usuario),
+            
+            link = reverse('activar_cambio_contraseña_confirmacion', kwargs={'uidb64': uid[0], 'token': token[0]})
+
+            url_activacion = 'http://'+dominio+link
+
+            email_cuerpo = 'Hola, para activar tu cuenta hacé click en el link a continuación y seguí los pasos que te indican \n' + url_activacion
+            email_asunto = "Activa tu cuenta"
+
+            email = EmailMessage(
+                    email_asunto,
+                    email_cuerpo,
+                    settings.EMAIL_HOST_USER,
+                    [correo_electronico],
+                )
+            email.send(fail_silently=False)
+            
+            messages.success(self.request, 'Account successfully created')
+            if es_medico:
+                return HttpResponseRedirect(reverse('cargar_perfil_medico', kwargs={'dni': usuario.dni, 'correo_electronico': usuario.correo_electronico}))
+
+            return render(self.request, 'activar_cambio_contraseña_hecho.html')
+                        
+        else:
+            messages.error(self.request, 'el DNI '+ dni + ' ya se encuentra registrado')
+            return render(self.request, 'registro_empleados.html', context)
+
+        
+        form.send_email()
+        return HttpResponseRedirect
+
+class RegistroPacientesViews(FormView):
+    template_name = "registro_empleados.html"
     form_class = RegistroForm
     #TODO página de bienvenida
 
@@ -33,6 +99,7 @@ class RegistroPersonalViews(FormView):
             #Creo el usuario sin contraseña e inactivo. luego tendrá que activarlo desde el correo electrónico
             usuario = Usuario.objects.create_user(dni=dni, correo_electronico=correo_electronico, password='contraseña')
             usuario.is_active=False
+            usuario.es_paciente=True
             usuario.save()
 
             #Armo y envío el correo electrónico
@@ -58,10 +125,7 @@ class RegistroPersonalViews(FormView):
             
             messages.success(self.request, 'Account successfully created')
             return render(self.request, 'activar_cambio_contraseña_hecho.html')
-            
-            # else:
-            #     messages.error(self.request, 'el DNI '+ dni + ' ya se encuentra registrado')
-            #     return render(self.request, 'registro_empleados.html', context)
+                        
         else:
             messages.error(self.request, 'el DNI '+ dni + ' ya se encuentra registrado')
             return render(self.request, 'registro_empleados.html', context)

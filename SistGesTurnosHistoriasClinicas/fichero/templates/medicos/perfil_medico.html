@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} Administrar datos del Médico {% endblock %}
+
+{% block content %}
+    <!-- {% if user.is_authenticated %} -->
+
+        <h1>Datos del Médico</h1>
+        <div class="form-group">
+            <form method="post">
+                {% csrf_token %}
+                <!-- {{ form.as_p }}
+                <button class="btn btn-secondary">Guardar</button> -->
+                <label for="id_dni">DNI:</label>
+                <input type="text" name="dni" class="form-control" placeholder="DNI (solo numeros)" maxlength="50" required id="id_dni"
+                {% if dni %} value="{{ dni }}" {% endif %}
+                {% if medico %} value="{{ medico.dni }}" {% endif %}>
+    
+                <label for="id_apellido">APELLIDO:</label>
+                <input type="text" name="apellido" class="form-control" placeholder="Apellido/s" maxlength="150" required id="id_apellido"
+                {% if medico %} value="{{ medico.apellido }}" {% endif %}>
+    
+                <label for="id_nombre">NOMBRE:</label>
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre/s" maxlength="150" required id="id_nombre"
+                {% if medico %} value="{{ medico.nombre }}" {% endif %}>
+    
+                <label for="id_correo_electronico">CORREO_ELECTRONICO:</label>
+                <input type="email" name="correo_electronico" class="form-control" maxlength="254" required id="id_correo_electronico" 
+                {% if correo_electronico %}value="{{ correo_electronico }}" {% endif %}
+                {% if medico %} value="{{ medico.correo_electronico }}" {% endif %}>
+    
+                <label for="id_telefono">TELEFONO:</label>
+                <input type="text" name="telefono" class="form-control" placeholder="Teléfono" maxlength="50" required id="id_telefono"
+                {% if medico %} value="{{ medico.telefono }}" {% endif %}>
+    
+                <label for="id_matricula">MATRICULA_PROFESIONAL:</label>
+                <input type="text" name="matricula" class="form-control" placeholder="Número de matrícula" maxlength="50" required id="id_matricula"
+                {% if medico %} value="{{ medico.matricula }}" {% endif %}>
+    
+                <button type="submit" class="btn btn-secondary">Guardar</button>
+            </form>
+        </div>
+    <!-- {% else %}
+        <h1>NO TENES PERMISO PARA ELLO</h1>
+    {% endif %} -->
+
+{% endblock %}

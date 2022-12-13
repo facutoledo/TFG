@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
+
+    <div class="col-sm-3">
+        <div class="form-group pt-3">
+            <input type="button" class="btn btn-light form-control" value="Página de administración" onclick="location.href='/admin/'">
+        </div>        
+        <div class="form-group pt-3">
+            <input type="button" class="btn btn-light form-control" value="Agregar usuario para personal" onclick="location.href='/registro_personal/'">
+        </div>        
+    </div>
+</div>
+
 Bienvenido
 {% endblock %}

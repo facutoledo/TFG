@@ -9,9 +9,11 @@ urlpatterns = [
          name='ingreso'),
      path('salir/', views.LogoutView.as_view(template_name='salir.html'),
          name='salir'),
+     path('registro/', RegistroPacientesViews.as_view(template_name="registro_pacientes.html"),
+         name='registro_pacientes'),
      path('registro_personal/', RegistroPersonalViews.as_view(template_name="registro_empleados.html"),
          name='registro_personal'),
-   
+     
      #Reestablecer la contraseña del usuario logueado
      path('contrasena_cambio/', views.PasswordChangeView.as_view(template_name='contrasena_cambio_form.html',
                                                                 success_url=reverse_lazy('activar_cambio_contraseña_completado')),

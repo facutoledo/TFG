@@ -5,4 +5,7 @@ from .views import BienvenidaView
 urlpatterns = [
     path('', login_required(BienvenidaView.as_view()),
          name='bienvenida'),
+    
+    path('principal/paciente/<pk>/', login_required(BienvenidaView.as_view()),
+         name='pagina_principal_paciente'),
 ]

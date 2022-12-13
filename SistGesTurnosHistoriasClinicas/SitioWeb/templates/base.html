@@ -24,21 +24,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="#">Turnos</a>
+                <a class="nav-link" href="{% url 'turnos' %}">Turnos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'pacientes' %}">Pacientes</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDrop" data-toggle="dropdown">
-                  Administrar
-                </a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Prácticas Médicas</a>
-                  <a class="dropdown-item" href="#">Especialidades</a>
-                  <a class="dropdown-item" href="#">Diagnósticos</a>
-
-                </div>
+                <a class="nav-link" href="{% url 'medicos' %}">Médicos</a>                
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'contrasena_cambio' %}">Cambiar contraseña</a>

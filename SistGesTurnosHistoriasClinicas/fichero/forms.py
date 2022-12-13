@@ -2,6 +2,7 @@ from django import forms
 
 from .models import *
 
+#--> PACIENTES
 
 class AgregarPacienteForm(forms.ModelForm):
 
@@ -58,3 +59,28 @@ class BorrarPacienteForm(forms.ModelForm):
             'telefono': forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}),
             'contacto': forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}),
         }
+
+#--> MEDICOS
+
+class AgregarMedicoForm(forms.ModelForm):
+    
+    class Meta:
+        model = Medico
+        fields = ('dni', 'apellido', 'nombre', 'correo_electronico',
+                  'telefono', 'matricula', )
+
+        widgets = {
+            'dni': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'DNI (solo numeros)'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido/s'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre/s'}),
+            'correo_electronico': forms.EmailInput(attrs={'class': 'form-control',}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control',
+                                               'placeholder': 'Teléfono'}),
+            'matricula': forms.TextInput(attrs={'class': 'form-control',
+                                               'placeholder': 'Número de matrícula'}),
+            
+        }
+
+#--> TURNOS
+
+

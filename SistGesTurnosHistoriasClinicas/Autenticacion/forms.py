@@ -1,7 +1,9 @@
 from datetime import datetime
-from django.forms import Form, CharField, EmailField, PasswordInput
+from django import forms
+from django.forms import BooleanField, Form, CharField, EmailField, PasswordInput
 from django.contrib.auth.forms import SetPasswordForm
 
+from .models import *
 
 class RegistroForm(Form):
     """
@@ -10,7 +12,19 @@ class RegistroForm(Form):
     """
     dni = CharField()
     correo_electronico = EmailField()
-    #contrasenia = CharField(widget=PasswordInput)
+
+class RegistroEmpleadoForm(Form):
+    """
+    dni
+    correo_electrónico
+    es_medico
+    is_staff
+    """
+        
+    dni= CharField()
+    correo_electronico= EmailField()
+    is_staff = BooleanField(initial=False, required=False)
+    es_medico = BooleanField(initial=False, required=False)
 
 
 class EstablecerContraseñaForm(SetPasswordForm):
