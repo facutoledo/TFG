@@ -81,6 +81,30 @@ class AgregarMedicoForm(forms.ModelForm):
             
         }
 
-#--> TURNOS
+#--> TURNOS CONSULTORIO
 
+class AgregarTurnoConsultorioForm(forms.ModelForm):
+    
+    class Meta:
+        model = TurnoConsultorio
+        fields = ('fecha', 'hora', 'medico', 'paciente', 'borrado')
 
+        widgets = {
+            'fecha': forms.DateInput(format='%d/%m/%Y'),
+            'hora': forms.TimeInput(format='%H/%M'),   
+            'medico': forms.NumberInput(),
+            'paciente': forms.NumberInput(),         
+        }
+
+class BorrarTurnoConsultorioForm(forms.ModelForm):
+    
+    class Meta:
+        model = TurnoConsultorio
+        fields = ('fecha', 'hora', 'medico', 'paciente', 'borrado')
+
+        widgets = {
+            'fecha': forms.DateInput(format='%d/%m/%Y'),
+            'hora': forms.TimeInput(format='%H/%M'),   
+            'medico': forms.NumberInput(),
+            'paciente': forms.NumberInput(),         
+        }

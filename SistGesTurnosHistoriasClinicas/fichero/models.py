@@ -109,8 +109,10 @@ class BaseTurno(BaseAuditoria):
 
     fecha = models.DateField(null=False, blank=False, verbose_name='FECHA')
     hora = models.TimeField(null=False, blank=False, verbose_name='HORA')
-    estado = models.CharField(max_length=50, null=False, blank=False, verbose_name='ESTADO', choices=ESTADO)
+    estado = models.CharField(max_length=50, null=False, blank=False, default='AUSENTE', verbose_name='ESTADO', choices=ESTADO)
     observaciones = models.TextField(null=True, blank=True, verbose_name='OBSERVACIONES')
+    class Meta:
+        abstract = True
 
 class TurnoConsultorio(BaseTurno):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE, null=False, blank=False,
@@ -131,8 +133,13 @@ class TurnoConsultorio(BaseTurno):
                 self.creado_usuario = usuario.dni
             else:
                 #Guardo los datos previos a la modificación. 
-                datos_anteriores_jason = serializers.serialize('json', TurnoConsultorio.objects.filter(fecha=self.fecha, hora=self.hora, medico=self.medico))
+                datos_anteriores = TurnoConsultorio.objects.filter(fecha=self.fecha, hora=self.hora, medico=self.medico)
+                datos_anteriores_jason = serializers.serialize('json', datos_anteriores)
                 self.modificaciones = 'version anterior - ' + datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + '\n' + datos_anteriores_jason
+
+                #recupero el turno si es que fue borrado y se lo quiere volver a crear
+                if datos_anteriores.borrado:
+                    self.borrado = False
 
                 #registro la modificación o eliminación lógica
                 if self.borrado:
@@ -164,14 +171,19 @@ class TurnoEstudio(BaseTurno):
                 self.creado_usuario = usuario.dni
             else:
                 #Guardo los datos previos a la modificación. 
-                datos_anteriores_jason = serializers.serialize('json', TurnoEstudio.objects.filter(fecha=self.fecha, hora=self.hora, medico=self.medico))
+                datos_anteriores = TurnoEstudio.objects.filter(fecha=self.fecha, hora=self.hora, medico=self.medico)
+                datos_anteriores_jason = serializers.serialize('json', datos_anteriores)
                 self.modificaciones = 'version anterior - ' + datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + '\n' + datos_anteriores_jason
+
+                #recupero el turno si es que fue borrado y se lo quiere volver a crear
+                if datos_anteriores.borrado:
+                    self.borrado = False
 
                 #registro la modificación o eliminación lógica
                 if self.borrado:
                     self.borrado_fecha = datetime.now()
                     self.borrado_usuario = usuario.dni
-                else:
+                else:                    
                     self.modificado_fecha = datetime.now()
                     self.modificado_usuario = usuario.dni    
         super(TurnoEstudio, self).save(*args, **kwargs)
@@ -197,9 +209,14 @@ class HistoriaClinica(BaseAuditoria):
                 self.creado_usuario = usuario.dni
             else:
                 #Guardo los datos previos a la modificación. 
-                datos_anteriores_jason = serializers.serialize('json', HistoriaClinica.objects.filter(fecha=self.fecha, hora=self.hora, medico=self.medico))
+                datos_anteriores =  HistoriaClinica.objects.filter(fecha=self.fecha, hora=self.hora, medico=self.medico)
+                datos_anteriores_jason = serializers.serialize('json', datos_anteriores)
                 self.modificaciones = 'version anterior - ' + datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + '\n' + datos_anteriores_jason
 
+                #recupero el turno si es que fue borrado y se lo quiere volver a crear
+                if datos_anteriores.borrado:
+                    self.borrado = False
+                
                 #registro la modificación o eliminación lógica
                 if self.borrado:
                     self.borrado_fecha = datetime.now()

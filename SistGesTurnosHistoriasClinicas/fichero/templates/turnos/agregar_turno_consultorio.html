@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %} Administrar datos del Paciente {% endblock %}
+
+{% block content %}
+    
+<div class="row">
+    <h1>Agregar Turno para consultorio</h1>
+</div>
+<form method="get" action=".">
+    <input type="number" hidden name="refresh" id="id_refresh" value="{{ refresh }}">
+    <div class="form-group" {% if siguiente == 'Siguiente' %} hidden {% endif %}>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="container p-3 my-3 border">            
+                    <div class="form-group py-2">
+                        <h4>Seleccione fecha</h4>
+                        <input type="date" class="form-control" name="fecha" id="id_fecha" value="{{ fecha_selecta2 }}">
+                    </div>
+                    <div class="form-group py-2">
+                        <h4>Seleccione hora</h4>
+                        <input type="time" class="form-control" name="hora"  id="id_hora" value="{{ hora_selecta }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="container p-3 my-3 border">            
+                    <div class="form-group py-2">
+                        <h4>Seleccione el médico</h4>
+                        {% for medico in medicos %}
+                            <div class="form-check">
+                                <input type="radio" name="medico" id="id_medico" class="form-check-input" value="{{ medico.pk }}" {% if medico_selecto == medico.pk %} checked {% endif %} >
+                                <label class="form-check-label" for="id_medico">{{ medico }}</label>
+                            </div>                       
+                        {% endfor %}
+                    </div>            
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="container p-3 my-3 border"> 
+                    <h4>Seleccione el paciente</h4>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" name="paciente_dni" placeholder="DNI (solo numeros)" value="{{ paciente_dni }}">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="paciente_apellido" placeholder="Apellido" value="{{ paciente_apellido }}">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="paciente_nombre" placeholder="Nombre" value="{{ paciente_nombre }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group py-2">
+                            <button class="form-control btn btn-secondary" type="submit">Buscar</button>                        
+                        </div>
+                    </div> 
+                    <div class="row">                    
+                        <div class="col-1">
+                        </div>
+                        <div class="col">DNI</div>
+                        <div class="col">APELLIDO</div>
+                        <div class="col">NOMBRE</div>
+                        <div class="col">TELEFONO</div>
+                    </div>  
+                    {% for paciente in pacientes %}
+                    <div class="row">           
+                        <div class="col-1">
+                            <input type="radio" name="paciente" id="id_paciente" class="form-check-input" value="{{ paciente.pk }}" {% if paciente_selecto == paciente.pk %} checked {% endif %} >
+                        </div>
+                        <div class="col">{{ paciente.dni }}</div>
+                        <div class="col">{{ paciente.apellido }}</div>
+                        <div class="col">{{ paciente.nombre }}</div>
+                        <div class="col">{{ paciente.telefono }}</div>                    
+                    </div>                        
+                    {% endfor %}      
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container p-3 my-3 border"> 
+                    <input type="checkbox" name="borrado" id="id_borrado" {% if borrado == True %} checked {% endif %}>
+                    <label class="text-danger">BORRAR TURNO</label>                
+                </div>
+            </div>
+        </div>
+
+    </div>  
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="container p-3 my-3 border"> 
+                <input class="form-control btn btn-secondary" type="submit" 
+                {% if siguiente == "Cambiar" %} 
+                    value="Siguiente" 
+                {% else %}
+                    value="Cambiar" 
+                {% endif %}            
+                name="siguiente">
+            </div>
+        </div>
+    </div> 
+</form> 
+<div class="row" {% if siguiente != "Siguiente" %} hidden {% endif %}>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <div class="container p-3 my-3 border">
+            <div class="form-group">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group py-2">
+                        <input type="text" readonly class="form-control" name="fecha" required id="id_fecha" value="{{fecha_selecta}}">
+                    </div>
+                    <div class="form-group py-2">
+                        <input type="text" readonly class="form-control py-2" name="hora" required id="id_hora" value="{{ hora_selecta }}">
+                    </div>
+                    <div class="form-group py-2">
+                        <input type="number" readonly class="form-control py-2" name="medico" required id="id_medico" value="{{ medico_selecto }}">
+                    </div>
+                    <div class="form-group py-2">
+                        <input type="number" readonly class="form-control py-2" name="paciente" required id="id_paciente" value="{{ paciente_selecto }}">
+                    </div>
+                    <div class="form-group py-2">
+                        <input type="checkbox" readonly name="borrado" id="id_borrado" {% if borrado == True %} checked {% endif %}>
+                        <label class="text-danger">BORRAR TURNO</label>
+                    </div>
+                    <div class="form-group py-2">
+                        <button class="btn btn-secondary form-control py-2">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        
+    
+
+{% endblock %}
